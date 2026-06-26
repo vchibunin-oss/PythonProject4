@@ -1,6 +1,5 @@
-# Widget functions
 from src.masks import get_mask_account, get_mask_card_number
-# Widget helper functions
+
 
 def mask_account_card(data: str) -> str:
     parts = data.split()
