@@ -10,7 +10,7 @@ def log(filename: str | None = None) -> Callable:
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             try:
                 result = func(*args, **kwargs)
-                message = f"{func.__name__} ok\n"
+                message = f"{func.__name__} ok: {result}\n"
             except Exception as error:
                 message = (
                     f"{func.__name__} error: {type(error).__name__}. "
@@ -36,3 +36,4 @@ def log(filename: str | None = None) -> Callable:
         return wrapper
 
     return decorator
+
