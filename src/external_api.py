@@ -21,15 +21,9 @@ def convert_transaction_to_rub(transaction: dict) -> float:
 
     url = "https://api.apilayer.com/exchangerates_data/convert"
 
-    headers = {
-        "apikey": API_KEY
-    }
+    headers = {"apikey": API_KEY}
 
-    params = {
-        "from": currency,
-        "to": "RUB",
-        "amount": amount
-    }
+    params = {"from": currency, "to": "RUB", "amount": amount}
 
     response = requests.get(url, headers=headers, params=params)
     response.raise_for_status()

@@ -16,5 +16,5 @@ def load_transactions(file_path: str) -> list:
 
         return []
 
-    except (FileNotFoundError, json.JSONDecodeError):
+    except FileNotFoundError, json.JSONDecodeError:
         return []

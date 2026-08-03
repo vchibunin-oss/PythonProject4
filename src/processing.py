@@ -10,11 +10,7 @@ def filter_by_state(
     """
     Return operations filtered by state.
     """
-    return [
-        operation
-        for operation in operations
-        if operation.get("state") == state
-    ]
+    return [operation for operation in operations if operation.get("state") == state]
 
 
 def sort_by_date(
