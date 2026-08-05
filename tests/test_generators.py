@@ -8,21 +8,15 @@ def transactions():
     return [
         {
             "description": "Перевод организации",
-            "operationAmount": {
-                "currency": {"code": "USD"}
-            },
+            "operationAmount": {"currency": {"code": "USD"}},
         },
         {
             "description": "Оплата картой",
-            "operationAmount": {
-                "currency": {"code": "RUB"}
-            },
+            "operationAmount": {"currency": {"code": "RUB"}},
         },
         {
             "description": "Перевод клиенту",
-            "operationAmount": {
-                "currency": {"code": "USD"}
-            },
+            "operationAmount": {"currency": {"code": "USD"}},
         },
     ]
 
@@ -52,11 +46,15 @@ def test_transaction_descriptions(transactions):
     "start, end, expected",
     [
         (1, 1, ["0000 0000 0000 0001"]),
-        (9998, 10000, [
-            "0000 0000 0000 9998",
-            "0000 0000 0000 9999",
-            "0000 0000 0001 0000",
-        ]),
+        (
+            9998,
+            10000,
+            [
+                "0000 0000 0000 9998",
+                "0000 0000 0000 9999",
+                "0000 0000 0001 0000",
+            ],
+        ),
     ],
 )
 def test_card_number_generator(start, end, expected):

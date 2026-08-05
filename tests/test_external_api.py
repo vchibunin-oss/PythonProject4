@@ -4,14 +4,7 @@ from src.external_api import convert_transaction_to_rub
 
 
 def test_convert_transaction_to_rub_rub():
-    transaction = {
-        "operationAmount": {
-            "amount": "1500",
-            "currency": {
-                "code": "RUB"
-            }
-        }
-    }
+    transaction = {"operationAmount": {"amount": "1500", "currency": {"code": "RUB"}}}
 
     assert convert_transaction_to_rub(transaction) == 1500.0
 
@@ -23,14 +16,7 @@ def test_convert_transaction_to_rub_usd(mock_get):
     mock_response.raise_for_status.return_value = None
     mock_get.return_value = mock_response
 
-    transaction = {
-        "operationAmount": {
-            "amount": "100",
-            "currency": {
-                "code": "USD"
-            }
-        }
-    }
+    transaction = {"operationAmount": {"amount": "100", "currency": {"code": "USD"}}}
 
     assert convert_transaction_to_rub(transaction) == 9500.0
     mock_get.assert_called_once()
@@ -43,14 +29,7 @@ def test_convert_transaction_to_rub_eur(mock_get):
     mock_response.raise_for_status.return_value = None
     mock_get.return_value = mock_response
 
-    transaction = {
-        "operationAmount": {
-            "amount": "100",
-            "currency": {
-                "code": "EUR"
-            }
-        }
-    }
+    transaction = {"operationAmount": {"amount": "100", "currency": {"code": "EUR"}}}
 
     assert convert_transaction_to_rub(transaction) == 10500.0
     mock_get.assert_called_once()

@@ -12,10 +12,7 @@ def log(filename: str | None = None) -> Callable:
                 result = func(*args, **kwargs)
                 message = f"{func.__name__} ok: {result}\n"
             except Exception as error:
-                message = (
-                    f"{func.__name__} error: {type(error).__name__}. "
-                    f"Inputs: {args}, {kwargs}\n"
-                )
+                message = f"{func.__name__} error: {type(error).__name__}. " f"Inputs: {args}, {kwargs}\n"
 
                 if filename:
                     with open(filename, "a", encoding="utf-8") as file:
@@ -36,4 +33,3 @@ def log(filename: str | None = None) -> Callable:
         return wrapper
 
     return decorator
-
