@@ -1,7 +1,7 @@
 """Functions for processing bank operations."""
 
-from collections import Counter
 import re
+from collections import Counter
 from typing import Any
 
 
