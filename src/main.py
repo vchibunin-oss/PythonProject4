@@ -26,6 +26,7 @@ def main():
 
     if operations:
         print(f"\nНайдено операций: {len(operations)}")
+
         for operation in operations:
             print(
                 f"{operation.get('date', '')} | "
@@ -38,5 +39,4 @@ def main():
 
 
 if __name__ == "__main__":
-     main()
-
+    main()
