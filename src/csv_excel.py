@@ -12,7 +12,8 @@ def read_csv(path: str) -> list[dict[str, Any]]:
     :param path: Путь к CSV-файлу.
     :return: Список словарей с транзакциями.
     """
-    dataframe = pd.read_csv(path)
+
+    dataframe = pd.read_csv(path, sep=";")
     return dataframe.fillna("").to_dict(orient="records")
 
 
@@ -23,5 +24,6 @@ def read_excel(path: str) -> list[dict[str, Any]]:
     :param path: Путь к Excel-файлу.
     :return: Список словарей с транзакциями.
     """
+
     dataframe = pd.read_excel(path)
     return dataframe.fillna("").to_dict(orient="records")

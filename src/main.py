@@ -4,6 +4,9 @@ import re
 from csv_excel import read_csv, read_excel
 from processing import filter_by_state, process_bank_search, sort_by_date
 from utils import load_transactions
+from widget import mask_account_card, get_date
+
+RUB_CODES = ("RUB", "RUR")
 
 
 def load_file(file_path: Path, source: str) -> list[dict]:
@@ -25,19 +28,28 @@ def is_ruble_operation(operation: dict) -> bool:
         currency = operation_amount.get("currency", {})
         if isinstance(currency, dict):
             code = currency.get("code", "")
-            if str(code).upper() in ("RUB", "RUR"):
+            if str(code).upper() in RUB_CODES:
                 return True
 
     currency = operation.get("currency", {})
     if isinstance(currency, dict):
         code = currency.get("code", "")
-        if str(code).upper() in ("RUB", "RUR"):
+        if str(code).upper() in RUB_CODES:
             return True
 
-    if str(operation.get("currency_code", "")).upper() in ("RUB", "RUR"):
+    if str(operation.get("currency_code", "")).upper() in RUB_CODES:
         return True
 
-    return str(currency).upper() in ("RUB", "RUR")
+    return str(currency).upper() in RUB_CODES
+
+
+def format_amount(operation: dict) -> str:
+    """Форматирует сумму операции с учетом валюты."""
+    amount = operation.get("amount", "")
+    currency_code = str(operation.get("currency_code", "")).upper()
+    if currency_code in RUB_CODES:
+        return f"Сумма: {amount} руб."
+    return f"Сумма: {amount} {currency_code}"
 
 
 def print_operations(operations: list[dict]) -> None:
@@ -50,12 +62,23 @@ def print_operations(operations: list[dict]) -> None:
     print("Результат поиска:\n")
 
     for operation in operations:
-        print(
-            f"Дата: {operation.get('date', '')} | "
-            f"Описание: {operation.get('description', '')} | "
-            f"Откуда: {operation.get('from', '')} | "
-            f"Куда: {operation.get('to', '')}"
-        )
+        date_raw = operation.get("date", "")
+        description = operation.get("description", "")
+        from_raw = operation.get("from", "")
+        to_raw = operation.get("to", "")
+
+        date_str = get_date(date_raw) if date_raw else ""
+        from_str = mask_account_card(from_raw) if from_raw else ""
+        to_str = mask_account_card(to_raw) if to_raw else ""
+
+        print(f"{date_str} {description}")
+        if from_str and to_str:
+            print(f"{from_str} -> {to_str}")
+        else:
+            print(from_str or to_str)
+
+        print(format_amount(operation))
+        print()
 
 
 def main() -> None:
@@ -157,7 +180,6 @@ def main() -> None:
 
     print_operations(operations)
 
+
 if __name__ == "__main__":
     main()
-    
-
