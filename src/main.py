@@ -125,39 +125,39 @@ def main() -> None:
         else:
             operations = sort_by_date(operations, reverse=True)
 
-        ruble_answer = input(
-            "\nПрограмма: Выводить только рублевые транзакции? Да/Нет\n"
+    ruble_answer = input(
+        "\nПрограмма: Выводить только рублевые транзакции? Да/Нет\n"
+        "Пользователь: "
+    ).strip().lower()
+
+    if ruble_answer in ("да", "д", "yes", "y"):
+        operations = [
+            operation
+            for operation in operations
+            if is_ruble_operation(operation)
+        ]
+
+    search_answer = input(
+        "\nПрограмма: Фильтровать список транзакций по определенному "
+        "слову в описании? Да/Нет\n"
+        "Пользователь: "
+    ).strip().lower()
+
+    if search_answer in ("да", "д", "yes", "y"):
+        search_word = input(
+            "\nПрограмма: Введите слово для поиска в описании:\n"
             "Пользователь: "
-        ).strip().lower()
+        ).strip()
 
-        if ruble_answer in ("да", "д", "yes", "y"):
-            operations = [
-                operation
-                for operation in operations
-                if is_ruble_operation(operation)
-            ]
+        if search_word:
+            operations = process_bank_search(
+                operations,
+                re.escape(search_word),
+            )
 
-        search_answer = input(
-            "\nПрограмма: Фильтровать список транзакций по определенному "
-            "слову в описании? Да/Нет\n"
-            "Пользователь: "
-        ).strip().lower()
-
-        if search_answer in ("да", "д", "yes", "y"):
-            search_word = input(
-                "\nПрограмма: Введите слово для поиска в описании:\n"
-                "Пользователь: "
-            ).strip()
-
-            if search_word:
-                operations = process_bank_search(
-                    operations,
-                    re.escape(search_word),
-                )
-
-        print_operations(operations)
+    print_operations(operations)
 
 if __name__ == "__main__":
     main()
-
+    
 
