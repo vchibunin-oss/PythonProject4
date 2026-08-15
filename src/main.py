@@ -45,8 +45,19 @@ def is_ruble_operation(operation: dict) -> bool:
 
 def format_amount(operation: dict) -> str:
     """Форматирует сумму операции с учетом валюты."""
-    amount = operation.get("amount", "")
-    currency_code = str(operation.get("currency_code", "")).upper()
+    operation_amount = operation.get("operationAmount", {})
+
+    if isinstance(operation_amount, dict) and operation_amount:
+        amount = operation_amount.get("amount", "")
+        currency = operation_amount.get("currency", {})
+        if isinstance(currency, dict):
+            currency_code = str(currency.get("code", "")).upper()
+        else:
+            currency_code = str(currency).upper()
+    else:
+        amount = operation.get("amount", "")
+        currency_code = str(operation.get("currency_code", "")).upper()
+
     if currency_code in RUB_CODES:
         return f"Сумма: {amount} руб."
     return f"Сумма: {amount} {currency_code}"
@@ -54,12 +65,17 @@ def format_amount(operation: dict) -> str:
 
 def print_operations(operations: list[dict]) -> None:
     """Выводит найденные банковские операции."""
+    print("\nПрограмма: Распечатываю итоговый список транзакций...")
+
     if not operations:
-        print("\nОпераций, соответствующих запросу, не найдено.")
+        print(
+            "\nПрограмма: Не найдено ни одной транзакции, "
+            "подходящей под ваши условия фильтрации"
+        )
         return
 
-    print(f"\nНайдено операций: {len(operations)}")
-    print("Результат поиска:\n")
+    print("\nПрограмма:")
+    print(f"Всего банковских операций в выборке: {len(operations)}\n")
 
     for operation in operations:
         date_raw = operation.get("date", "")
@@ -123,8 +139,9 @@ def main() -> None:
     status = input("Пользователь: ").strip().upper()
 
     while status not in ("EXECUTED", "CANCELED", "PENDING"):
-        print("Программа: Введите один из доступных статусов:")
-        print("EXECUTED, CANCELED, PENDING")
+        print(f'\nПрограмма: Статус операции "{status}" недоступен.')
+        print("\nПрограмма: Введите статус, по которому необходимо выполнить фильтрацию.")
+        print("Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING")
         status = input("Пользователь: ").strip().upper()
 
     operations = filter_by_state(operations, status)
